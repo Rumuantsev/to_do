@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import taskManager from "../../domain/TaskManager";
 
 const Task = ({ title, about, id }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    // Ограничиваем `title` и `about` до 40 символов, если `isExpanded` равно `false`
+    const displayedTitle = isExpanded ? title : `${title.slice(0, 40)}${title.length > 40 ? '...' : ''}`;
+    const displayedAbout = isExpanded ? about : `${about.slice(0, 40)}${about.length > 40 ? '...' : ''}`;
+
+    const handleInfo = () => {
+        setIsExpanded(!isExpanded);
+    };
+
     const handleDelete = () => {
         const deleteModal = document.getElementById('deleteModal');
         const confirmDelete = document.getElementById('yesButton');
@@ -39,7 +49,6 @@ const Task = ({ title, about, id }) => {
         };
 
         editModal.style.display = 'flex';
-        console.log("Edit")
     };
 
     const saveTask = () => {
@@ -74,8 +83,8 @@ const Task = ({ title, about, id }) => {
         <div className="task_container" id={id}>
             <div className="task_content">
                 <div className="task_text">
-                    <h3 id={`task-title-${id}`}>{title}</h3>
-                    <p id={`task-about-${id}`}>{about}</p>
+                    <h3 id={`task-title-${id}`} style={{ whiteSpace: 'pre-wrap' }}>{displayedTitle}</h3>
+                    <p id={`task-about-${id}`} style={{ whiteSpace: 'pre-wrap' }}>{displayedAbout}</p>
                 </div>
                 <div className="task_button">
                     <button onClick={handleDelete}>
@@ -88,7 +97,7 @@ const Task = ({ title, about, id }) => {
                     <button onClick={handleShare}>
                         <img className="share_img" src="/src/presentation/images/ic_share.svg" alt="share" />
                     </button>
-                    <button>
+                    <button onClick={handleInfo}>
                         <img className="info_img" src="/src/presentation/images/ic_info.svg" alt="info" />
                     </button>
                     <button onClick={handleEdit}>
