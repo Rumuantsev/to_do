@@ -2,7 +2,7 @@ RU:
 
 Для запуска проекта вам потребуется Node.js и npm (Node Package Manager)
 
-В моем проекте используется версия 20.13.1
+В моем проекте используется версия Node 20.13.1
 
 Установите их, если еще не сделали этого: https://nodejs.org/en
 
@@ -21,7 +21,7 @@ EN:
 
 You will need a Node to run the project.js and npm (Node Package Manager)
 
-My project uses version 20.13.1
+My project uses version Node 20.13.1
 
 Install them if you haven't already done so: https://nodejs.org/en
 
