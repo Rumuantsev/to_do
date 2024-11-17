@@ -1,22 +1,27 @@
 @import './presentation/styles/task.scss';
 @import './presentation/styles/modal.scss';
 
-*{
+* {
     font-family: Roboto;
 }
-body{
-    background: #1B1A17; ;
-    .input_form{
+
+body {
+    background: #1B1A17;
+    ;
+
+    .input_form {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin: auto;
         width: 100%;
-        .text_forms{
+
+        .text_forms {
             display: flex;
             flex-direction: column;
             width: 100%;
-            input{
+
+            input {
                 height: 18px;
                 width: 100%;
                 padding: 7px 14px;
@@ -26,12 +31,15 @@ body{
                 border-radius: 4px;
                 color: #F0E3CA;
             }
-            input::placeholder{
-                color: #F0E3CAA3;    
+
+            input::placeholder {
+                color: #F0E3CAA3;
             }
+
             input:last-child {
                 margin: 0px;
             }
+
             input:focus {
                 outline: none;
                 border: 1px #FF8303 solid;
@@ -39,9 +47,11 @@ body{
                 color: #F0E3CA;
             }
         }
-        .create_button{
+
+        .create_button {
             margin-left: 45px;
-            button{
+
+            button {
                 width: 72px;
                 height: 72px;
                 border: 2px #FF8303 solid;
@@ -50,30 +60,32 @@ body{
                 font-size: 50px;
                 width: 70px;
                 border-radius: 8px;
-                img{
+
+                img {
                     width: 24px;
                     height: 24px;
                     margin-bottom: 5px;
                 }
             }
-            button:hover{
+
+            button:hover {
                 background: #23221F;
             }
         }
     }
 }
 
-.no_tasks{
+.no_tasks {
     display: none;
     flex-direction: column;
-    margin: auto; 
+    margin: auto;
     margin-top: 10%;
-    width: 30%; 
+    width: 30%;
     height: 60px;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
-    
-    p{
+
+    p {
         margin: auto;
         font-family: Inter;
         font-size: 24px;
@@ -82,34 +94,37 @@ body{
 }
 
 #root {
-    width: 50%; 
-    margin: 0 auto; 
-    transition: width 0.3s ease-in-out; 
+    width: 50%;
+    margin: 0 auto;
+    transition: width 0.3s ease-in-out;
 }
 
 
 @media (min-width: 1025px) {
     #root {
-        width: 50%; 
+        width: 50%;
     }
-    .task_text{
+
+    .task_text {
         width: 90%;
     }
 }
 
 @media (max-width: 1024px) {
     #root {
-        width: 60%; 
+        width: 60%;
     }
-    .task_text{
+
+    .task_text {
         width: 85%;
     }
 }
 
 @media (max-width: 768px) {
     #root {
-        width: 70%; 
+        width: 70%;
     }
+
     .task_text {
         width: 80%;
     }
@@ -117,10 +132,10 @@ body{
 
 @media (max-width: 425px) {
     #root {
-        width: 100%; 
+        width: 100%;
     }
-    .task_text{
+
+    .task_text {
         width: 70%;
     }
 }
-
