@@ -98,8 +98,8 @@
 .edit_modal .edit_modal_content .edit_modal_buttons button:hover {
   border: 1px solid #FF8303;
 }
-.edit_modal .edit_modal_content .edit_modal_buttons #cancel_button {
-  margin-right: 12px;
+.edit_modal .edit_modal_content .edit_modal_buttons .cancel_button {
+  margin-left: 12px;
 }
 
 .share_modal .share_modal_content {
@@ -158,7 +158,7 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
-  display: none;
+  display: flex;
   justify-content: center;
   align-items: center;
 }/*# sourceMappingURL=modal.css.map */

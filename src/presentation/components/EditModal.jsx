@@ -1,18 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 
-function EditModal() {
+function EditModal({ isVisible, onSave, onCancel, task }) {
+  const [title, setTitle] = useState(task ? task.title : "");
+  const [description, setDescription] = useState(task ? task.about : "");
+
+  if (!isVisible) return null;
+
+  const handleSave = () => {
+    onSave(title, description);
+  };
+
   return (
-    <div id="editModal" className="modal edit_modal">
+    <div className="modal edit_modal">
       <div className="edit_modal_content">
-        <input type="text" id="editTitle" placeholder="Mini input" />
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Title"
+        />
         <textarea
-          id="editDescription"
-          placeholder="Max input"
-          defaultValue={""}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Description"
         />
         <div className="edit_modal_buttons">
-          <button id="cancel_button">Cancel</button>
-          <button id="save_button">Save</button>
+          <button className="confirm_button" onClick={onCancel}>
+            Cancel
+          </button>
+          <button className="cancel_button" onClick={handleSave}>
+            Save
+          </button>
         </div>
       </div>
     </div>

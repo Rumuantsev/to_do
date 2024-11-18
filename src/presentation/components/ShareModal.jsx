@@ -1,37 +1,45 @@
 import React from "react";
 
-function ShareModal() {
+function ShareModal({ isVisible, onClose, shareText }) {
+  if (!isVisible) return null;
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(shareText);
+    onClose();
+  };
+
+  const links = [
+    {
+      img: "/src/presentation/images/ic_copy.svg",
+      alt: "Copy",
+    },
+    {
+      img: "/src/presentation/images/ic_vk.svg",
+      alt: "VK",
+    },
+    {
+      img: "/src/presentation/images/ic_telegram.svg",
+      alt: "Telegram",
+    },
+    {
+      img: "/src/presentation/images/ic_whatsapp.svg",
+      alt: "WhatsApp",
+    },
+    {
+      img: "/src/presentation/images/ic_facebook.svg",
+      alt: "Facebook",
+    },
+  ];
+
   return (
-    <div id="shareModal" className="modal share_modal">
+    <div className="modal share_modal">
       <div className="share_modal_content">
         <div className="share_modal_buttons">
-          <button id="copyButton">
-            <img
-              className="copy_img"
-              src="/src/presentation/images/ic_copy.svg"
-            />
-          </button>
-          <button id="vkButton">
-            <img className="vk_img" src="/src/presentation/images/ic_vk.svg" />
-          </button>
-          <button id="telegramButton">
-            <img
-              className="telegram_img"
-              src="/src/presentation/images/ic_telegram.svg"
-            />
-          </button>
-          <button id="whatsappButton">
-            <img
-              className="whatsapp_img"
-              src="/src/presentation/images/ic_whatsapp.svg"
-            />
-          </button>
-          <button id="facebookButton">
-            <img
-              className="facebook_img"
-              src="/src/presentation/images/ic_facebook.svg"
-            />
-          </button>
+          {links.map((link) => (
+            <button onClick={() => handleShare(link.platform)}>
+              <img src={link.img} alt={link.alt} />
+            </button>
+          ))}
         </div>
       </div>
     </div>

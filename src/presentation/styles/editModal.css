@@ -70,6 +70,6 @@
 .edit_modal .edit_modal_content .edit_modal_buttons button:hover {
   border: 1px solid #FF8303;
 }
-.edit_modal .edit_modal_content .edit_modal_buttons #cancel_button {
-  margin-right: 12px;
+.edit_modal .edit_modal_content .edit_modal_buttons .cancel_button {
+  margin-left: 12px;
 }/*# sourceMappingURL=editModal.css.map */

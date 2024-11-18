@@ -1,13 +1,15 @@
 import React from "react";
 
-function DeleteModal() {
+function DeleteModal({ isVisible, onDelete, onCancel }) {
+  if (!isVisible) return null;
+
   return (
-    <div id="deleteModal" className="modal delete_modal">
+    <div className="modal delete_modal">
       <div className="modal_content">
         <p>Delete this task?</p>
         <div className="modal_buttons">
-          <button id="yesButton">Yes</button>
-          <button id="noButton">No</button>
+          <button onClick={onDelete}>Yes</button>
+          <button onClick={onCancel}>No</button>
         </div>
       </div>
     </div>
