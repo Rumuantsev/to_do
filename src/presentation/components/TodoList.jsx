@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
-import taskManager from "../../domain/TaskManager";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addTask, reorderTasks } from "../redux/tasksSlice";
 import Task from "./Task";
 import TaskInput from "./TaskInput";
 import NoTask from "./NoTask";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const TodoList = () => {
-  const [tasks, setTasks] = useState(taskManager.getTasks());
+  const tasks = useSelector((state) => state.tasks);
+  const dispatch = useDispatch();
 
   const onTaskCreated = (task) => {
-    const newTask = taskManager.addTask(task);
-    setTasks([...tasks, newTask]);
+    const newTask = { ...task, id: Date.now() };
+    dispatch(addTask(newTask));
   };
 
   const handleOnDragEnd = (result) => {
@@ -18,15 +20,12 @@ const TodoList = () => {
 
     if (!destination) return;
 
-    const reorderedTasks = Array.from(tasks);
-    const [movedTask] = reorderedTasks.splice(source.index, 1);
-    reorderedTasks.splice(destination.index, 0, movedTask);
-
-    setTasks(reorderedTasks);
-  };
-
-  const refreshTasks = () => {
-    setTasks(taskManager.getTasks());
+    dispatch(
+      reorderTasks({
+        sourceIndex: source.index,
+        destinationIndex: destination.index,
+      })
+    );
   };
 
   return (
@@ -52,12 +51,7 @@ const TodoList = () => {
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                   >
-                    <Task
-                      title={task.title}
-                      about={task.about}
-                      id={task.id}
-                      refreshTasks={refreshTasks}
-                    />
+                    <Task title={task.title} about={task.about} id={task.id} />
                   </div>
                 )}
               </Draggable>

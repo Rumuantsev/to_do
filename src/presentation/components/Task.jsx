@@ -1,108 +1,83 @@
 import React, { useState } from "react";
-import taskManager from "../../domain/TaskManager";
+import { useDispatch } from "react-redux";
+import { deleteTask, editTask } from "../redux/tasksSlice";
+import DeleteModal from "./DeleteModal";
+import EditModal from "./EditModal";
+import ShareModal from "./ShareModal";
 
-const Task = ({ title, about, id }) => {
+const Task = ({ id, title, about }) => {
+  const dispatch = useDispatch();
+
   const [isExpanded, setIsExpanded] = useState(false);
-
-  // Ограничиваем `title` и `about` до 40 символов, если `isExpanded` равно `false`
-  const displayedTitle = isExpanded
-    ? title
-    : `${title.slice(0, 40)}${title.length > 40 ? "..." : ""}`;
-  const displayedAbout = isExpanded
-    ? about
-    : `${about.slice(0, 40)}${about.length > 40 ? "..." : ""}`;
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [isShareModalVisible, setIsShareModalVisible] = useState(false);
+  const [currentTask, setCurrentTask] = useState({ title, about });
 
   const handleInfo = () => {
     setIsExpanded(!isExpanded);
   };
 
   const handleDelete = () => {
-    const deleteModal = document.getElementById("deleteModal");
-    const confirmDelete = document.getElementById("yesButton");
-    const cancelDelete = document.getElementById("noButton");
+    setIsDeleteModalVisible(true);
+  };
 
-    deleteModal.style.display = "flex";
+  const confirmDelete = () => {
+    dispatch(deleteTask(id));
+    setIsDeleteModalVisible(false);
+  };
 
-    confirmDelete.onclick = () => {
-      taskManager.deleteTask(id);
-      document.getElementById(id).remove();
-      deleteModal.style.display = "none";
-      if (taskManager.getTasks().length === 0) {
-        const noTasks = document.querySelector(".no_tasks");
-        noTasks.style.display = "flex";
-      }
-    };
-
-    cancelDelete.onclick = () => {
-      deleteModal.style.display = "none";
-    };
+  const cancelDelete = () => {
+    setIsDeleteModalVisible(false);
   };
 
   const handleEdit = () => {
-    const editModal = document.getElementById("editModal");
-    const editTask = taskManager.getTask(id);
-    document.getElementById("editTitle").value = editTask.title;
-    document.getElementById("editDescription").value = editTask.about;
-
-    const saveButton = document.getElementById("save_button");
-    saveButton.onclick = saveTask;
-
-    const cancelButton = document.getElementById("cancel_button");
-    cancelButton.onclick = () => {
-      editModal.style.display = "none";
-    };
-
-    editModal.style.display = "flex";
+    setCurrentTask({ title, about });
+    setIsEditModalVisible(true);
   };
 
-  const saveTask = () => {
-    const updatedTitle = document.getElementById("editTitle").value;
-    const updatedDescription = document.getElementById("editDescription").value;
-    if (updatedTitle && updatedDescription) {
-      taskManager.editTask(id, {
-        title: updatedTitle,
-        about: updatedDescription,
-      });
-      document.getElementById(`task-title-${id}`).innerText = updatedTitle;
-      document.getElementById(`task-about-${id}`).innerText =
-        updatedDescription;
-      document.getElementById("editModal").style.display = "none";
-    } else {
+  const saveEdit = (newTitle, newAbout) => {
+    if (!newTitle || !newAbout) {
       alert("Поля не должны быть пустыми.");
+      return;
     }
+    dispatch(
+      editTask({ id, updatedTask: { title: newTitle, about: newAbout } })
+    );
+    setCurrentTask({ title: newTitle, about: newAbout });
+    setIsEditModalVisible(false);
+  };
+
+  const cancelEdit = () => {
+    setIsEditModalVisible(false);
   };
 
   const handleShare = () => {
-    const shareModal = document.getElementById("shareModal");
-    shareModal.style.display = "flex";
-
-    const shareText = `${title}\n\n${about}`;
-    const shareButtons = [
-      "copyButton",
-      "vkButton",
-      "telegramButton",
-      "whatsappButton",
-      "facebookButton",
-    ];
-    shareButtons.forEach((buttonId) => {
-      const button = document.getElementById(buttonId);
-      button.onclick = () => {
-        navigator.clipboard.writeText(shareText);
-        shareModal.style.display = "none";
-      };
-    });
+    setIsShareModalVisible(true);
   };
+
+  const closeShareModal = () => {
+    setIsShareModalVisible(false);
+  };
+
+  const displayedTitle = isExpanded
+    ? currentTask.title
+    : `${currentTask.title.slice(0, 12)}${
+        currentTask.title.length > 12 ? "..." : ""
+      }`;
+
+  const displayedAbout = isExpanded
+    ? currentTask.about
+    : `${currentTask.about.slice(0, 19)}${
+        currentTask.about.length > 19 ? "..." : ""
+      }`;
 
   return (
     <div className="task_container" id={id}>
       <div className="task_content">
         <div className="task_text">
-          <h3 id={`task-title-${id}`} style={{ whiteSpace: "pre-wrap" }}>
-            {displayedTitle}
-          </h3>
-          <p id={`task-about-${id}`} style={{ whiteSpace: "pre-wrap" }}>
-            {displayedAbout}
-          </p>
+          <h3>{displayedTitle}</h3>
+          <p>{displayedAbout}</p>
         </div>
         <div className="task_button">
           <button onClick={handleDelete}>
@@ -139,6 +114,25 @@ const Task = ({ title, about, id }) => {
           </button>
         </div>
       </div>
+
+      <DeleteModal
+        isVisible={isDeleteModalVisible}
+        onDelete={confirmDelete}
+        onCancel={cancelDelete}
+      />
+
+      <EditModal
+        isVisible={isEditModalVisible}
+        task={currentTask}
+        onSave={saveEdit}
+        onCancel={cancelEdit}
+      />
+
+      <ShareModal
+        isVisible={isShareModalVisible}
+        onClose={closeShareModal}
+        shareText={`${currentTask.title}\n\n${currentTask.about}`}
+      />
     </div>
   );
 };

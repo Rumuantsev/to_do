@@ -1,20 +1,25 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addTask } from "../redux/tasksSlice";
 
-const TaskInput = ({ onTaskCreated }) => {
+const TaskInput = () => {
   const [title, setTitle] = useState("");
   const [about, setAbout] = useState("");
+  const dispatch = useDispatch();
 
   const handleAddTask = () => {
-    if (title && about) {
-      const newTask = { title, about };
-      if (typeof onTaskCreated === "function") {
-        onTaskCreated(newTask);
-      }
-      setTitle("");
-      setAbout("");
-    } else {
+    if (title.trim() === "" || about.trim() === "") {
       alert("Поля не должны быть пустыми.");
+      return;
     }
+    const newTask = {
+      id: Date.now(), // Генерация уникального ID
+      title,
+      about,
+    };
+    dispatch(addTask(newTask));
+    setTitle("");
+    setAbout("");
   };
 
   return (
